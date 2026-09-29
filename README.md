@@ -28,6 +28,14 @@ O projeto não exige `npm install`, etapa de build ou servidor web. Para executa
 npm test
 ```
 
+Para medir o parser com uma base sintética reproduzível de 100 mil linhas:
+
+```bash
+npm run benchmark
+```
+
+O benchmark informa tempo e variação de memória do processo. Os números variam conforme a versão do Node.js, o sistema operacional e o hardware; compare execuções feitas no mesmo ambiente.
+
 ## Formato de entrada
 
 O parser reconhece automaticamente vírgula, ponto e vírgula ou tabulação como separador. Também trata BOM UTF-8, finais de linha LF/CRLF, campos entre aspas, aspas duplicadas e quebras de linha dentro de um campo.
@@ -50,13 +58,14 @@ Consulte [ANALISE-USABILIDADE.md](ANALISE-USABILIDADE.md) para o estudo do fluxo
 
 ## Estrutura
 
-| Arquivo       | Responsabilidade                                     |
-| ------------- | ---------------------------------------------------- |
-| `index.html`  | Estrutura acessível da interface                     |
-| `styles.css`  | Layout responsivo e identidade visual                |
-| `app.js`      | Importação, busca, ordenação, paginação e exportação |
-| `csv.js`      | Parser CSV e proteção contra fórmulas de planilha    |
-| `csv.test.js` | Testes automatizados do parser                       |
+| Arquivo                     | Responsabilidade                                     |
+| --------------------------- | ---------------------------------------------------- |
+| `index.html`                | Estrutura acessível da interface                     |
+| `styles.css`                | Layout responsivo e identidade visual                |
+| `app.js`                    | Importação, busca, ordenação, paginação e exportação |
+| `csv.js`                    | Parser CSV e proteção contra fórmulas de planilha    |
+| `csv.test.js`               | Testes automatizados do parser                       |
+| `scripts/benchmark-csv.mjs` | Benchmark local com dados sintéticos                 |
 
 ## Contribuir
 

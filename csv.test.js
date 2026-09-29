@@ -29,6 +29,20 @@ test("detects tab delimiter", () => {
   });
 });
 
+test("keeps delimiter detection across records with quoted newlines", () => {
+  assert.deepEqual(
+    parseCSV('id;descricao;status\n1;"linha um\nlinha dois";ativo\n2;;'),
+    {
+      headers: ["id", "descricao", "status"],
+      rows: [
+        ["1", "linha um\nlinha dois", "ativo"],
+        ["2", "", ""],
+      ],
+      delimiter: ";",
+    },
+  );
+});
+
 test("preserves escaped quotes, delimiters and newlines inside quoted fields", () => {
   assert.deepEqual(parseCSV('id,texto\n1,"disse ""olá,""\nsegunda linha"'), {
     headers: ["id", "texto"],
