@@ -67,39 +67,64 @@ function parseRecords(source, delimiter) {
 }
 
 function chooseDelimiter(source) {
-  let best = { delimiter: ",", score: -Infinity };
-  let hasValidCandidate = false;
-  let firstParseError;
+  const counts = [0, 0, 0];
+  const totals = [0, 0, 0];
+  const firstWidths = [null, null, null];
+  const matchingRecords = [0, 0, 0];
+  let inQuotes = false;
+  let rowHasContent = false;
+  let records = 0;
 
-  for (const delimiter of DELIMITERS) {
-    try {
-      const records = parseRecords(source, delimiter);
-      if (records.length === 0) continue;
-      hasValidCandidate = true;
-      const width = records[0].length;
-      const matchingRows = records.filter(
-        (record) => record.length === width,
-      ).length;
-      const consistency = matchingRows / records.length;
-      const averageWidth =
-        records.reduce((total, record) => total + record.length, 0) /
-        records.length;
-      const score =
-        averageWidth * 100 + consistency * 10 + Math.min(width, 50) / 100;
-      if (score > best.score) best = { delimiter, score };
-    } catch (error) {
-      firstParseError ??= error;
-      // Um candidato incorreto pode interpretar aspas de forma inválida.
+  const finishRecord = () => {
+    if (rowHasContent || counts.some((count) => count > 0)) {
+      records++;
+      counts.forEach((count, index) => {
+        const width = count + 1;
+        firstWidths[index] ??= width;
+        totals[index] += width;
+        if (width === firstWidths[index]) matchingRecords[index]++;
+      });
+    }
+    counts.fill(0);
+    rowHasContent = false;
+  };
+
+  for (let index = 0; index < source.length; index++) {
+    const char = source[index];
+    if (char === '"') {
+      if (inQuotes && source[index + 1] === '"') {
+        rowHasContent = true;
+        index++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (inQuotes) {
+      rowHasContent = true;
+    } else if (!inQuotes) {
+      const delimiterIndex = DELIMITERS.indexOf(char);
+      if (delimiterIndex >= 0) {
+        counts[delimiterIndex]++;
+        rowHasContent = true;
+      }
+      if (char === "\n" || char === "\r") {
+        if (char === "\r" && source[index + 1] === "\n") index++;
+        finishRecord();
+      } else {
+        rowHasContent = true;
+      }
     }
   }
+  finishRecord();
 
-  if (!hasValidCandidate) {
-    if (firstParseError instanceof Error) throw firstParseError;
-    throw new Error(
-      "Não foi possível interpretar o CSV. Confira as aspas e os separadores.",
-    );
-  }
-  return best.delimiter;
+  if (records === 0) throw new Error("Não foi possível interpretar o CSV.");
+
+  const scores = totals.map((total, index) => {
+    const width = firstWidths[index] ?? 1;
+    const averageWidth = total / records;
+    const consistency = matchingRecords[index] / records;
+    return averageWidth * 100 + consistency * 10 + Math.min(width, 50) / 100;
+  });
+  return DELIMITERS[scores.indexOf(Math.max(...scores))];
 }
 
 function parseCSV(text) {
