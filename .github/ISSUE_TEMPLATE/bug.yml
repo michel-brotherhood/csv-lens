@@ -1,0 +1,29 @@
+name: Relatar problema
+description: Relate um erro reproduzível usando dados fictícios.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Não anexe arquivos CSV reais. Remova dados pessoais e use um exemplo mínimo fictício."
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que você esperava?
+      placeholder: Descreva o resultado esperado.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: O que aconteceu?
+      placeholder: Descreva o que aconteceu e os passos para reproduzir.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador e versão
+      placeholder: "Exemplo: Firefox 130 no Linux"
+    validations:
+      required: true
