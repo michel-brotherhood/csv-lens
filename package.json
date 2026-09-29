@@ -1,0 +1,11 @@
+{
+  "name": "csv-lens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "Michel Brotherhood",
+  "description": "Explore arquivos CSV no navegador: busque, ordene e exporte dados sem enviar os arquivos para um servidor."
+}

@@ -1,0 +1,30 @@
+name: Verificações
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Testes e sintaxe
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v7
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Instalar dependências
+        run: npm ci
+      - name: Executar testes
+        run: npm test
+      - name: Validar sintaxe JavaScript
+        run: |
+          node --check app.js
+          node --check csv.js
