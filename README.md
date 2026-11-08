@@ -17,12 +17,18 @@
 ## Começar
 
 1. Baixe ou clone o repositório.
-2. Abra `index.html` em um navegador moderno.
-3. Escolha um arquivo `.csv` ou arraste-o para a área indicada.
+2. Na pasta do projeto, inicie um servidor HTTP local (por exemplo, com Python 3):
+
+   ```bash
+   python3 -m http.server 8080 --bind 127.0.0.1
+   ```
+
+   Abra `http://localhost:8080` em um navegador moderno. Os módulos JavaScript precisam ser servidos por HTTP; abrir o HTML diretamente por `file://` pode bloquear o aplicativo.
+3. Clique em **Experimentar com dados fictícios**, escolha um arquivo `.csv` ou arraste-o para a área indicada.
 4. Use a busca, a ordenação e a paginação para encontrar os dados.
 5. Clique em **Exportar filtrados** para baixar o resultado atual.
 
-O projeto não exige `npm install`, etapa de build ou servidor web. Para executar os testes, é necessário ter Node.js 20 ou superior:
+O projeto não exige `npm install`, etapa de build ou backend. O servidor HTTP local apenas entrega os arquivos estáticos; o processamento do CSV acontece no navegador. Para executar os testes, é necessário ter Node.js 20 ou superior:
 
 ```bash
 npm test
@@ -35,6 +41,12 @@ npm run benchmark
 ```
 
 O benchmark informa tempo e variação de memória do processo. Os números variam conforme a versão do Node.js, o sistema operacional e o hardware; compare execuções feitas no mesmo ambiente.
+
+## Exemplo demonstrativo
+
+O botão **Experimentar com dados fictícios** abre [examples/demo.csv](examples/demo.csv), com 30 itens de inventário sintéticos. É possível buscar por `organizacao`, ordenar colunas, avançar à segunda página e exportar os resultados. O exemplo também está disponível para download na interface.
+
+Nenhum dado de pessoa ou cliente é usado. A demonstração carrega apenas o CSV de exemplo do mesmo endereço que serve o aplicativo. Arquivos escolhidos pelo usuário continuam sendo processados localmente.
 
 ## Formato de entrada
 
@@ -74,3 +86,4 @@ Leia [CONTRIBUTING.md](CONTRIBUTING.md) antes de enviar uma alteração. Relatos
 ## Licença
 
 Distribuído sob a licença MIT. Consulte [LICENSE](LICENSE).
+

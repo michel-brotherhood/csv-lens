@@ -155,6 +155,35 @@ body {
 .workspace {
   margin-top: 30px;
 }
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px 0;
+  font-size: 12px;
+}
+.demo-actions a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+.file-info {
+  min-width: 0;
+}
+.file-info > div {
+  min-width: 0;
+}
+.file-info strong {
+  overflow-wrap: anywhere;
+}
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+.search-box:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 .file-row {
   display: flex;
   align-items: center;
@@ -454,3 +483,4 @@ footer span {
     justify-content: space-between;
   }
 }
+

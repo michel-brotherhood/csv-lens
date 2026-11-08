@@ -11,7 +11,13 @@ Obrigado por considerar uma contribuição ao CSV Lens.
 
 ## Desenvolvimento local
 
-O app abre diretamente pelo `index.html`. Para validar as mudanças com Node.js 20 ou superior:
+Sirva a pasta do projeto por HTTP e abra `http://localhost:8080`:
+
+```bash
+python3 -m http.server 8080 --bind 127.0.0.1
+```
+
+Abrir `index.html` por `file://` pode bloquear os módulos JavaScript. Para validar as mudanças com Node.js 20 ou superior:
 
 ```bash
 npm test
@@ -24,3 +30,4 @@ Adicione testes para mudanças no parser, sobretudo para aspas, separadores, lin
 ## Pull requests
 
 Descreva o comportamento anterior, o novo comportamento e a forma de validação. Se a interface mudar, inclua capturas de tela próprias com dados fictícios. Não use dados reais ou confidenciais nas imagens.
+

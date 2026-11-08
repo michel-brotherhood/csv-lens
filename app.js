@@ -178,6 +178,22 @@ async function loadFile(file) {
 }
 
 el("choose-file").addEventListener("click", () => fileInput.click());
+el("load-demo").addEventListener("click", async () => {
+  const button = el("load-demo");
+  button.disabled = true;
+  el("error-box").hidden = true;
+  try {
+    const response = await fetch(new URL("./examples/demo.csv", import.meta.url));
+    if (!response.ok) throw new Error("Não foi possível carregar o exemplo.");
+    await loadFile(
+      new File([await response.text()], "demo.csv", { type: "text/csv" }),
+    );
+  } catch {
+    showError("Não foi possível carregar o exemplo. Tente novamente ou escolha um CSV.");
+  } finally {
+    button.disabled = false;
+  }
+});
 fileInput.addEventListener("change", () => {
   loadFile(fileInput.files[0]);
   fileInput.value = "";
@@ -244,3 +260,4 @@ document.addEventListener("keydown", (e) => {
     el("search").focus();
   }
 });
+
