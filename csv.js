@@ -134,7 +134,10 @@ function parseCSV(text) {
   if (records.length < 2)
     throw new Error("Não encontrei cabeçalho e linhas de dados suficientes.");
 
-  const columnCount = Math.max(...records.map((record) => record.length));
+  const columnCount = records.reduce(
+    (maximum, record) => Math.max(maximum, record.length),
+    0,
+  );
   const headers = Array.from({ length: columnCount }, (_, index) => {
     const value = records[0][index]?.trim();
     return value || `Coluna ${index + 1}`;
@@ -156,3 +159,4 @@ function protectSpreadsheetFormula(value) {
 }
 
 export { parseCSV, protectSpreadsheetFormula };
+

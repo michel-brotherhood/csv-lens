@@ -2,6 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { parseCSV, protectSpreadsheetFormula } from "./csv.js";
 
+test("parses 200 thousand rows without exceeding the argument limit", () => {
+  const { headers, rows } = parseCSV("a,b\n" + "1,2\n".repeat(200000));
+  assert.deepEqual(headers, ["a", "b"]);
+  assert.equal(rows.length, 200000);
+  assert.deepEqual(rows.at(-1), ["1", "2"]);
+});
+
 test("parses comma-delimited rows and trims header names", () => {
   assert.deepEqual(parseCSV("\uFEFF name ,age\nAna,32\nBeto,28"), {
     headers: ["name", "age"],
@@ -91,3 +98,4 @@ test("protects formula-like spreadsheet values without changing numbers", () => 
   assert.equal(protectSpreadsheetFormula("-42.50"), "-42.50");
   assert.equal(protectSpreadsheetFormula("Texto normal"), "Texto normal");
 });
+
